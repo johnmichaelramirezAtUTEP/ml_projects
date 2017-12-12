@@ -40,6 +40,11 @@ class LearningAgent(Agent):
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
 
+
+        if testing:
+            self.epsilon = 0
+            self.alpha = 0
+
         return None
 
     def build_state(self):
@@ -75,8 +80,10 @@ class LearningAgent(Agent):
         ## TO DO ##
         ###########
         # Calculate the maximum Q-value of all actions for a given state
-
         maxQ = None
+        actions = self.Q[state];
+        for action, qValue in actions:
+            maxQ += qValue;
 
         return maxQ 
 
@@ -90,6 +97,11 @@ class LearningAgent(Agent):
         # When learning, check if the 'state' is not in the Q-table
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
+        if state not in self.Q:
+            self.Q[state] = dict()
+
+        for valid_action in self.valid_actions:
+            self.Q[state][valid_action] = 0.0
 
         return
 
@@ -112,6 +124,9 @@ class LearningAgent(Agent):
 
 
         # When learning, choose a random action with 'epsilon' probability
+        
+
+        
         # Otherwise, choose an action with the highest Q-value for the current state
         # Be sure that when choosing an action with highest Q-value that you randomly select between actions that "tie".
         return action
